@@ -18,3 +18,17 @@ contract InteractionsScript is Script {
         vm.stopBroadcast();
     }
 }
+
+contract SetPrefixScript is Script {
+    address mostRecentlyDeployed = DevOpsTools.get_most_recent_deployment("HelloWorld", block.chainid);
+
+    function run() external {
+        setPrefix(mostRecentlyDeployed);
+    }
+
+    function setPrefix(address contractAddress) public {
+        vm.startBroadcast();
+        HelloWorld(contractAddress).setPrefix("Bonjour");
+        vm.stopBroadcast();
+    }
+}
